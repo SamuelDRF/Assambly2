@@ -1,0 +1,79 @@
+A51 MACRO ASSEMBLER  PROJETO3                                                             03/18/2024 14:57:19 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Projeto3.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Projeto3.a51 SET(SMALL) DEBUG PRINT(.\Listings\Projeto3.lst) OBJECT(.\O
+                      bjects\Projeto3.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0090                 1     Led                     EQU P1
+  00B0                 2     Contar                  EQU     P3.0
+  00B1                 3     Reset                   EQU     P3.1
+                       4     
+----                   5     CSEG    AT      0000H
+0000 804E              6     JMP             Inicio
+----                   7     CSEG    At 0050H
+                       8             
+0050                   9     Inicio:
+0050 759000           10             MOV Led, #00000000b                                     ;Estado inicial (Desligado)
+0053 116D             11             CALL fun
+                      12             
+0055                  13     TestarContar:
+0055 20B010           14             JB Contar, TestarReset                          ;Se Contar = 1 -> TestarIr
+                      15             
+0058 E590             16             MOV A, Led                                                      ;Led para ACC
+005A B40902           17             CJNE A, #9, ContarUm                            ;Se Led != 10 Contar 1
+005D 80F1             18             JMP Inicio                                                      ;Se Led == 10 Inicio
+                      19             
+005F                  20     ContarUm:
+005F E590             21             MOV A, Led                                                      ;Led para ACC
+0061 04               22             Inc A                                                           ;Acc++
+0062 F590             23             MOV Led, A                                                      ;ACC para Led (Apre
+                             senta)
+0064 116D             24             CALL fun                                                        ;Temporizador
+0066 80ED             25             JMP TestarContar                                        ;Voltar a testar botão
+                      26     
+0068                  27     TestarReset:
+0068 20B1EA           28             JB Reset, TestarContar                          ;Se Reset = 1 -> TestarContar
+006B 80E3             29             JMP Inicio
+                      30     
+                      31     
+006D                  32     Fun:
+006D 79FF             33             MOV R1, #0xFF
+006F 7AFF             34             MOV R2, #0xFF
+0071 7B07             35             MOV R3, #0x7
+0073                  36             Loop: 
+0073 D9FE             37                     DJNZ R1, Loop
+0075 DAFC             38                     DJNZ R2, Loop
+0077 DBFA             39                     DJNZ R3, Loop
+0079 22               40             RET
+                      41     
+007A 80D4             42     JMP Inicio
+                      43     END
+A51 MACRO ASSEMBLER  PROJETO3                                                             03/18/2024 14:57:19 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CONTAR . . . . . .  B ADDR   00B0H.0 A   
+CONTARUM . . . . .  C ADDR   005FH   A   
+FUN. . . . . . . .  C ADDR   006DH   A   
+INICIO . . . . . .  C ADDR   0050H   A   
+LED. . . . . . . .  D ADDR   0090H   A   
+LOOP . . . . . . .  C ADDR   0073H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RESET. . . . . . .  B ADDR   00B0H.1 A   
+TESTARCONTAR . . .  C ADDR   0055H   A   
+TESTARRESET. . . .  C ADDR   0068H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
